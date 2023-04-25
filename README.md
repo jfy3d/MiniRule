@@ -1,14 +1,10 @@
-# MiniRuleUI
-Thisi ui is based on vue3 and quasar2
+# MiniRule
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
+### Server
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+Django4,djangorestframework
+
+### UI 
+
+vue3,quasar2
+
