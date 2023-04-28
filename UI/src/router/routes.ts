@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '/index', name:'index', component: () => import('pages/IndexPage.vue') },
       { path: '/rule/:case_id', name:'rule', component: () => import('pages/RulePage.vue') },
-      // { path: '/business_config', name:'business_config', component: () => import('pages/BusinessConfigPage.vue') },
+      { path: '/tool', name:'tool', component: () => import('pages/BusinessConfigPage.vue') },
       // { path: '/customer_list', name:'customer_list', component: () => import('pages/CustomerList.vue') },
       // { path: '/order', name:'order', component: () => import('pages/OrderPage.vue') }
     ]

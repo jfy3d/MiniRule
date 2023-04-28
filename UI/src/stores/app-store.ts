@@ -11,6 +11,10 @@ export const appMenu = defineStore('menus', {
           {
             label: '规则配置',
             page: 'index'
+          },
+          {
+            label: '测试工具',
+            page: 'tool'
           }
         ]
       }

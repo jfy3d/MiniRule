@@ -12,6 +12,7 @@ function Rule() {
     {name: 'id', label: 'ID', field: 'id'},
     {name: 'rule_name', label: '规则名', field: 'rule_name', align: 'left'},
     {name: 'return_value', label: '返回值', field: 'return_value'},
+    {name: 'min_match_amount', label: '最少匹配数', field: 'min_match_amount'},
     {name: 'flag_index', label: '序号', field: 'flag_index'},
     {name: 'create_time', label: '创建时间', field: 'create_time'},
     {name: 'update_time', label: '修改时间', field: 'update_time'},

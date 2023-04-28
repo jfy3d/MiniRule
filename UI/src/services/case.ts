@@ -59,3 +59,18 @@ function Case() {
 }
 
 export {Case}
+
+
+function CaseField(){
+  const fields = ref<Array<object>>();
+  const loadFieldsList = (id?: object) => {
+    api.get(`/api/case/${id}/get_fields/`).then(
+      res => {
+        fields.value = res.data
+      }
+    );
+  };
+  return {fields, loadFieldsList}
+}
+
+export {CaseField}

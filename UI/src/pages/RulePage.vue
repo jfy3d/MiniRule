@@ -84,6 +84,17 @@
             </div>
 
             <div class="row items-center q-col-gutter-sm">
+              <div class="col-3">最少匹配数
+                <q-badge rounded color="red"/>
+              </div>
+              <div class="col-8">
+                <q-input
+                  v-model.number="itemModel.min_match_amount" filled square placeholder="最少匹配数" dense/>
+              </div>
+
+            </div>
+
+            <div class="row items-center q-col-gutter-sm">
               <div class="col-3">序号
                 <q-badge rounded color="red"/>
               </div>

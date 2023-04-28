@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import serializers
+from django.core import serializers as s
 from .models import Case, Item, Match
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, schema
@@ -56,6 +57,19 @@ class CaseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Case.objects.all().order_by('-update_time')
 
+    @action(detail=True)
+    def get_fields(self, request, pk=None):
+        _case = Case.objects.get(pk=pk)
+        _fields = []
+        for _item in _case.item_set.all().order_by('flag_index'):
+            for _match in _item.matches.all().order_by('flag_index'):
+                _fields.append({
+                    'id': _match.id,
+                    'description': _match.description,
+                    'field': _match.field
+                })
+        return Response(_fields)
+
 
 # class VersionViewSet(viewsets.ModelViewSet):
 #     serializer_class = VersionSerializer
@@ -72,7 +86,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Item.objects.all().order_by('-update_time')
 
     def list(self, request):
-        queryset = Item.objects.filter(case=request.GET.get('case_id')).order_by('-flag_index')
+        queryset = Item.objects.filter(case=request.GET.get('case_id')).order_by('flag_index')
         serializer = ItemSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -81,7 +95,7 @@ class MatchViewSet(viewsets.ModelViewSet):
     serializer_class = ItemMatchSerializer
 
     def get_queryset(self):
-        return Match.objects.all().order_by('-flag_index')
+        return Match.objects.all().order_by('flag_index')
 
     def list(self, request):
         queryset = Match.objects.filter(rule=request.GET.get('rule_id')).order_by('flag_index')

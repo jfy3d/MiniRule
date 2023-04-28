@@ -27,6 +27,8 @@ class Case(models.Model):
 class Item(models.Model):
     rule_name = models.CharField("规则名称", max_length=100)
     return_value = models.CharField('返回值', max_length=200)
+    # min_match_amount 0 全部匹配
+    min_match_amount = models.IntegerField('最少匹配数', default=0)
     flag_index = models.IntegerField('排序号', default=0)
     case = models.ForeignKey(Case, on_delete=models.CASCADE, null=False)
     create_time = models.DateTimeField('创建时间', auto_now_add=True)
