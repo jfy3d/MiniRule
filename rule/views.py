@@ -112,16 +112,19 @@ class RuleMatch(APIView):
         for _item in _case.item_set.all().order_by('flag_index'):
             _return_value = _item.return_value
             _match_result = {
-                'ruleId': _item.id,
-                'ruleName': _item.rule_name,
-                'list': []
+                'rule_id': _item.id,
+                'rule_name': _item.rule_name,
+                'list': [],
+                'min_match_amount': _item.min_match_amount
             }
+            _match_count = 0
             for _match in _item.matches.all().order_by('flag_index'):
                 if _match.field in _fields.keys():
                     if compare_map[_match.match_type](_fields[_match.field], model_to_dict(_match), _fields):
                         _match_result['list'].append({
                             _match.description: 1
                         })
+                        _match_count += 1
                     else:
                         _match_result['list'].append({
                             _match.description: 2
@@ -137,7 +140,16 @@ class RuleMatch(APIView):
                             _match.description: 2
                         })
                         _return_value = ''
+            if _item.min_match_amount == 0: #全匹配
+                # 实际匹配数小于规则数
+                if _match_count < _item.matches.count():
+                    _return_value = ''
+            #   实际匹配数小于要求匹配数，同时小于规则数
+            elif _match_count < _item.min_match_amount and _match_count < _item.matches.count():
+                _return_value = ''
+            _match_result['match_count'] = _match_count
             _match_result['result'] = _return_value
+
             _list.append(_match_result)
             if _return_value != '':
                 if _case.short_circuit == 1:
