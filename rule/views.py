@@ -15,7 +15,7 @@ from .compare import *
 
 
 class CaseSerializer(serializers.ModelSerializer):
-    versions = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    versions = serializers.PrimaryKeyRelatedField(many=True, read_only=True, help_text='版本号')
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
 
@@ -53,7 +53,8 @@ class ItemMatchSerializer(serializers.ModelSerializer):
 
 class CaseViewSet(viewsets.ModelViewSet):
     serializer_class = CaseSerializer
-
+    # allowed_methods = ['get', 'post']
+    http_method_names = ['get', 'post', 'put', 'delete']
     def get_queryset(self):
         return Case.objects.all().order_by('-update_time')
 
@@ -69,6 +70,7 @@ class CaseViewSet(viewsets.ModelViewSet):
                     'field': _match.field
                 })
         return Response(_fields)
+
 
 
 # class VersionViewSet(viewsets.ModelViewSet):
@@ -104,7 +106,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
 
 class RuleMatch(APIView):
-    def get(self, request):
+    def get(self, request) -> Response:
         _case_id = 5
         _fields = {"age": 20, 'nation': 'usa', 'weight': 50, 'interest': 2}
         _case = Case.objects.get(pk=_case_id)
@@ -140,7 +142,7 @@ class RuleMatch(APIView):
                             _match.description: 2
                         })
                         _return_value = ''
-            if _item.min_match_amount == 0: #全匹配
+            if _item.min_match_amount == 0:  # 全匹配
                 # 实际匹配数小于规则数
                 if _match_count < _item.matches.count():
                     _return_value = ''
